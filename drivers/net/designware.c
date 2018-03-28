@@ -26,6 +26,7 @@
 #include <fdtdec.h>
 #include <libfdt.h>
 #endif /* CONFIG_ARCH_NEXELL */
+#include <asm/gpio.h>
 #include "designware.h"
 
 DECLARE_GLOBAL_DATA_PTR;
@@ -620,6 +621,11 @@ static int designware_eth_probe(struct udevice *dev)
 	u32 iobase = pdata->iobase;
 	ulong ioaddr;
 	int ret;
+
+#ifdef CONFIG_DM_ETH_NRESET_PIN
+	ret = gpio_request(CONFIG_DM_ETH_NRESET_PIN, "phyrst");
+	ret = gpio_direction_output(CONFIG_DM_ETH_NRESET_PIN, 1);
+#endif
 
 #if defined(CONFIG_ARCH_NEXELL)
 	if (fdt_node_check_compatible(gd->fdt_blob, dev->of_offset,

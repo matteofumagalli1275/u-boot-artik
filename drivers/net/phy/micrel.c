@@ -476,3 +476,4 @@ int phy_micrel_init(void)
 	phy_register(&ksz8895_driver);
 	return 0;
 }
+
